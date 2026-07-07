@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1120">
     <title>Ilyas Digital Card</title>
     <meta name="description" content="Ilyas Mboula Moro — Business System Analyst, Builder. Scan or tap to connect.">
 
@@ -14,72 +15,185 @@
     <meta name="twitter:card" content="summary">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
         body {
             margin: 0;
-            font-family: Arial;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: white;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #16233d 0%, #0b1120 55%, #05070d 100%);
+            color: #f1f5f9;
             text-align: center;
+            position: relative;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 460px;
+            height: 460px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.28;
+            z-index: 0;
+            pointer-events: none;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+
+        body::before {
+            background: #3b82f6;
+            top: -160px;
+            left: -160px;
+        }
+
+        body::after {
+            background: #22c55e;
+            bottom: -160px;
+            right: -160px;
+            animation-delay: 2s;
+        }
+
+        @keyframes drift {
+            from { transform: translate(0, 0) scale(1); }
+            to   { transform: translate(20px, 30px) scale(1.08); }
         }
 
         .card {
+            position: relative;
+            z-index: 1;
             max-width: 400px;
             margin: 60px auto;
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 15px;
+            padding: 36px 28px 30px;
+            background: rgba(255, 255, 255, 0.045);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 26px;
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .card > * {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(.2, .7, .3, 1) forwards;
+        }
+
+        .card > *:nth-child(1) { animation-delay: .05s; }
+        .card > *:nth-child(2) { animation-delay: .12s; }
+        .card > *:nth-child(3) { animation-delay: .19s; }
+        .card > *:nth-child(4) { animation-delay: .26s; }
+        .card > *:nth-child(5) { animation-delay: .33s; }
+        .card > *:nth-child(6) { animation-delay: .40s; }
+        .card > *:nth-child(7) { animation-delay: .47s; }
+        .card > *:nth-child(8) { animation-delay: .54s; }
+        .card > *:nth-child(9) { animation-delay: .61s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         img.avatar {
-            width: 120px;
-            height: 120px;
+            width: 122px;
+            height: 122px;
             border-radius: 50%;
-            border: 3px solid #3b82f6;
+            border: 3px solid rgba(59, 130, 246, 0.65);
+            box-shadow:
+                0 0 0 6px rgba(59, 130, 246, 0.10),
+                0 10px 26px rgba(0, 0, 0, 0.45);
             object-fit: cover;
         }
 
-        .pitch {
-            font-size: 14px;
-            color: #cbd5e1;
-            background: #0f172a;
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin: 14px 0 20px;
+        h1 {
+            font-size: 1.55rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin: 18px 0 4px;
         }
 
-        a, button {
-            display: block;
+        .role {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .pitch {
+            display: inline-block;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #bfdbfe;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.32);
+            border-radius: 999px;
+            padding: 9px 18px;
+            margin: 16px 0 22px;
+        }
+
+        a.btn, button.btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             width: 100%;
-            box-sizing: border-box;
             margin: 10px 0;
-            padding: 12px;
-            background: #3b82f6;
-            color: white;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.38);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 14px;
+            color: #f1f5f9;
             text-decoration: none;
-            border-radius: 8px;
-            border: none;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 600;
             font-family: inherit;
             cursor: pointer;
+            transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease, background .25s ease, border-color .25s ease;
         }
 
-        a:hover, button:hover {
-            background: #2563eb;
+        a.btn:hover, button.btn:hover {
+            transform: translateY(-2px);
+            background: rgba(0, 0, 0, 0.55);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        a.btn:active, button.btn:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        a.btn:focus-visible, button.btn:focus-visible {
+            outline: 2px solid rgba(59, 130, 246, 0.8);
+            outline-offset: 2px;
         }
 
         button.save {
-            background: #22c55e;
+            background: rgba(34, 197, 94, 0.14);
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #bbf7d0;
         }
 
         button.save:hover {
-            background: #16a34a;
+            background: rgba(34, 197, 94, 0.22);
+            border-color: rgba(34, 197, 94, 0.55);
+            box-shadow: 0 14px 30px rgba(34, 197, 94, 0.22);
         }
 
         .qr-row {
             display: flex;
             justify-content: center;
             gap: 16px;
-            margin-top: 24px;
+            margin-top: 26px;
         }
 
         .qr-block {
@@ -90,21 +204,31 @@
 
         .qr {
             padding: 10px;
-            background: white;
-            border-radius: 10px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
         }
 
         .qr img {
             display: block;
-            width: 130px;
-            height: 130px;
+            width: 128px;
+            height: 128px;
         }
 
         .qr-label {
-            font-size: 12px;
+            font-size: 11.5px;
             color: #94a3b8;
-            margin-top: 8px;
+            margin-top: 9px;
             max-width: 130px;
+            line-height: 1.35;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card > *, body::before, body::after {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
         }
     </style>
 </head>
@@ -117,25 +241,25 @@
         <img class="avatar" src="profile.jpg" alt="Ilyas Mboula Moro">
 
         <h1>Ilyas Mboula Moro</h1>
-        <p>Business System Analyst • Builder</p>
+        <p class="role">Business System Analyst • Builder</p>
 
         <div class="pitch">Open to AI internships and collaborating on ML projects</div>
 
-        <a href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
-        <a href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
-        <a href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
-        <button class="save" onclick="saveContact()">📇 Save Contact</button>
+        <a class="btn" href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
+        <a class="btn" href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
+        <a class="btn" href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
+        <button class="btn save" onclick="saveContact()">📇 Save Contact</button>
 
         <div class="qr-row">
             <div class="qr-block">
                 <div class="qr">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=BEGIN%3AVCARD%0D%0AVERSION%3A3.0%0D%0AN%3AMoro%3BIlyas%3B%3B%3B%0D%0AFN%3AIlyas%20Mboula%20Moro%0D%0ATITLE%3ABusiness%20System%20Analyst%0D%0AEMAIL%3Amboulamoroilyas%40gmail.com%0D%0ATEL%3BTYPE%3DCELL%3A%2B27721234567%0D%0AURL%3Ahttps%3A%2F%2Fwww.linkedin.com%2Fin%2Filyas-m-moro-0508a62b1%0D%0AEND%3AVCARD" alt="QR code that saves this contact directly">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=128x128&data=BEGIN%3AVCARD%0D%0AVERSION%3A3.0%0D%0AN%3AMoro%3BIlyas%3B%3B%3B%0D%0AFN%3AIlyas%20Mboula%20Moro%0D%0ATITLE%3ABusiness%20System%20Analyst%0D%0AEMAIL%3Amboulamoroilyas%40gmail.com%0D%0ATEL%3BTYPE%3DCELL%3A%2B27721234567%0D%0AURL%3Ahttps%3A%2F%2Fwww.linkedin.com%2Fin%2Filyas-m-moro-0508a62b1%0D%0AEND%3AVCARD" alt="QR code that saves this contact directly">
                 </div>
                 <div class="qr-label">Scan to save contact instantly</div>
             </div>
             <div class="qr-block">
                 <div class="qr">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=https%3A%2F%2Filyasmoro.github.io%2FQR_Contact_Codes_001%2F" alt="QR code linking to this card">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=128x128&data=https%3A%2F%2Filyasmoro.github.io%2FQR_Contact_Codes_001%2F" alt="QR code linking to this card">
                 </div>
                 <div class="qr-label">Scan to view this card</div>
             </div>
