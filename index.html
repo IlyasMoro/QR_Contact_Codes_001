@@ -1,7 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ilyas Digital Card</title>
+    <meta name="description" content="Ilyas Mboula Moro — AI Developer, Entrepreneur, Builder. Scan or tap to connect.">
+
+    <meta property="og:title" content="Ilyas Mboula Moro — Digital Card">
+    <meta property="og:description" content="AI Developer • Entrepreneur • Builder">
+    <meta property="og:image" content="https://ilyasmoro.github.io/QR_Contact_Codes_001/profile.jpg">
+    <meta property="og:url" content="https://ilyasmoro.github.io/QR_Contact_Codes_001/">
+    <meta property="og:type" content="profile">
+    <meta name="twitter:card" content="summary">
 
     <style>
         body {
@@ -14,13 +24,13 @@
 
         .card {
             max-width: 400px;
-            margin: 80px auto;
+            margin: 60px auto;
             background: #1e293b;
             padding: 30px;
             border-radius: 15px;
         }
 
-        img {
+        img.avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
@@ -28,18 +38,44 @@
             object-fit: cover;
         }
 
-        a {
+        a, button {
             display: block;
+            width: 100%;
+            box-sizing: border-box;
             margin: 10px 0;
             padding: 12px;
             background: #3b82f6;
             color: white;
             text-decoration: none;
             border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-family: inherit;
+            cursor: pointer;
         }
 
-        a:hover {
+        a:hover, button:hover {
             background: #2563eb;
+        }
+
+        .qr {
+            margin: 20px auto 10px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .qr img {
+            display: block;
+            width: 160px;
+            height: 160px;
+        }
+
+        .qr-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -49,15 +85,46 @@
     <div class="card">
 
         <!-- your photo -->
-        <img src="profile.jpg">
+        <img class="avatar" src="profile.jpg" alt="Ilyas Mboula Moro">
 
         <h1>Ilyas Mboula Moro</h1>
         <p>AI Developer • Entrepreneur • Builder</p>
 
         <a href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
-        <a href="https://www.linkedin.com/in/your-profile" target="_blank">🔗 LinkedIn</a>
+        <a href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
+        <button onclick="saveContact()">📇 Save Contact</button>
+
+        <div class="qr">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Filyasmoro.github.io%2FQR_Contact_Codes_001%2F" alt="QR code linking to this card">
+        </div>
+        <p class="qr-label">Scan to share this card</p>
 
     </div>
+
+    <script>
+        function saveContact() {
+            const vcard = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                'N:Moro;Ilyas;;;',
+                'FN:Ilyas Mboula Moro',
+                'TITLE:AI Developer',
+                'TEL;TYPE=CELL:+27721234567',
+                'URL:https://www.linkedin.com/in/ilyas-m-moro-0508a62b1',
+                'END:VCARD'
+            ].join('\n');
+
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Ilyas_Mboula_Moro.vcf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+    </script>
 
 </body>
 </html>
