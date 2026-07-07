@@ -38,6 +38,15 @@
             object-fit: cover;
         }
 
+        .pitch {
+            font-size: 14px;
+            color: #cbd5e1;
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin: 14px 0 20px;
+        }
+
         a, button {
             display: block;
             width: 100%;
@@ -58,24 +67,44 @@
             background: #2563eb;
         }
 
+        button.save {
+            background: #22c55e;
+        }
+
+        button.save:hover {
+            background: #16a34a;
+        }
+
+        .qr-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .qr-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .qr {
-            margin: 20px auto 10px;
-            padding: 12px;
+            padding: 10px;
             background: white;
             border-radius: 10px;
-            display: inline-block;
         }
 
         .qr img {
             display: block;
-            width: 160px;
-            height: 160px;
+            width: 130px;
+            height: 130px;
         }
 
         .qr-label {
-            font-size: 13px;
+            font-size: 12px;
             color: #94a3b8;
-            margin-bottom: 20px;
+            margin-top: 8px;
+            max-width: 130px;
         }
     </style>
 </head>
@@ -90,14 +119,27 @@
         <h1>Ilyas Mboula Moro</h1>
         <p>AI Developer • Entrepreneur • Builder</p>
 
-        <a href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
-        <a href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
-        <button onclick="saveContact()">📇 Save Contact</button>
+        <div class="pitch">Open to AI collaborations, internships &amp; co-founder conversations</div>
 
-        <div class="qr">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Filyasmoro.github.io%2FQR_Contact_Codes_001%2F" alt="QR code linking to this card">
+        <a href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
+        <a href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
+        <a href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
+        <button class="save" onclick="saveContact()">📇 Save Contact</button>
+
+        <div class="qr-row">
+            <div class="qr-block">
+                <div class="qr">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=BEGIN%3AVCARD%0D%0AVERSION%3A3.0%0D%0AN%3AMoro%3BIlyas%3B%3B%3B%0D%0AFN%3AIlyas%20Mboula%20Moro%0D%0ATITLE%3AAI%20Developer%0D%0AEMAIL%3Amboulamoroilyas%40gmail.com%0D%0ATEL%3BTYPE%3DCELL%3A%2B27721234567%0D%0AURL%3Ahttps%3A%2F%2Fwww.linkedin.com%2Fin%2Filyas-m-moro-0508a62b1%0D%0AEND%3AVCARD" alt="QR code that saves this contact directly">
+                </div>
+                <div class="qr-label">Scan to save contact instantly</div>
+            </div>
+            <div class="qr-block">
+                <div class="qr">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=https%3A%2F%2Filyasmoro.github.io%2FQR_Contact_Codes_001%2F" alt="QR code linking to this card">
+                </div>
+                <div class="qr-label">Scan to view this card</div>
+            </div>
         </div>
-        <p class="qr-label">Scan to share this card</p>
 
     </div>
 
@@ -109,6 +151,7 @@
                 'N:Moro;Ilyas;;;',
                 'FN:Ilyas Mboula Moro',
                 'TITLE:AI Developer',
+                'EMAIL:mboulamoroilyas@gmail.com',
                 'TEL;TYPE=CELL:+27721234567',
                 'URL:https://www.linkedin.com/in/ilyas-m-moro-0508a62b1',
                 'END:VCARD'
