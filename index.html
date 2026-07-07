@@ -65,11 +65,33 @@
             to   { transform: translate(20px, 30px) scale(1.08); }
         }
 
-        .card {
+        .card-wrap {
             position: relative;
             z-index: 1;
             max-width: 400px;
             margin: 60px auto;
+            perspective: 900px;
+            touch-action: none;
+        }
+
+        .glow-ring {
+            position: absolute;
+            inset: -3px;
+            border-radius: 29px;
+            background: conic-gradient(from 0deg, #3b82f6, #22c55e, #a855f7, #f59e0b, #3b82f6);
+            filter: blur(11px);
+            opacity: 0.55;
+            z-index: 0;
+            animation: spin 7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
             padding: 36px 28px 30px;
             background: rgba(255, 255, 255, 0.045);
             backdrop-filter: blur(24px) saturate(160%);
@@ -79,22 +101,42 @@
             box-shadow:
                 0 25px 60px rgba(0, 0, 0, 0.55),
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transition: transform .2s ease-out;
+            will-change: transform;
         }
 
-        .card > * {
+        .sheen {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            border-radius: inherit;
+            pointer-events: none;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.32) 45%, rgba(147,197,253,0.32) 50%, rgba(255,255,255,0.32) 55%, transparent 70%);
+            background-size: 250% 250%;
+            background-position: 50% 50%;
+            opacity: 0;
+            transition: opacity .3s ease;
+            mix-blend-mode: overlay;
+        }
+
+        .card.tilting .sheen {
+            opacity: 1;
+        }
+
+        .card > *:not(.sheen) {
             opacity: 0;
             animation: fadeInUp 0.7s cubic-bezier(.2, .7, .3, 1) forwards;
         }
 
-        .card > *:nth-child(1) { animation-delay: .05s; }
-        .card > *:nth-child(2) { animation-delay: .12s; }
-        .card > *:nth-child(3) { animation-delay: .19s; }
-        .card > *:nth-child(4) { animation-delay: .26s; }
-        .card > *:nth-child(5) { animation-delay: .33s; }
-        .card > *:nth-child(6) { animation-delay: .40s; }
-        .card > *:nth-child(7) { animation-delay: .47s; }
-        .card > *:nth-child(8) { animation-delay: .54s; }
-        .card > *:nth-child(9) { animation-delay: .61s; }
+        .card > *:nth-child(2) { animation-delay: .05s; }
+        .card > *:nth-child(3) { animation-delay: .12s; }
+        .card > *:nth-child(4) { animation-delay: .19s; }
+        .card > *:nth-child(5) { animation-delay: .26s; }
+        .card > *:nth-child(6) { animation-delay: .33s; }
+        .card > *:nth-child(7) { animation-delay: .40s; }
+        .card > *:nth-child(8) { animation-delay: .47s; }
+        .card > *:nth-child(9) { animation-delay: .54s; }
+        .card > *:nth-child(10) { animation-delay: .61s; }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(14px); }
@@ -223,46 +265,68 @@
             line-height: 1.35;
         }
 
+        .confetti-piece {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 50;
+            animation: confetti-burst .9s cubic-bezier(.2,.8,.2,1) forwards;
+        }
+
+        @keyframes confetti-burst {
+            to {
+                transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
-            .card > *, body::before, body::after {
+            .card > *, body::before, body::after, .glow-ring {
                 animation: none !important;
                 opacity: 1 !important;
                 transform: none !important;
             }
+            .card { transition: none !important; }
+            .sheen { display: none !important; }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="card">
+    <div class="card-wrap" id="cardWrap">
+        <div class="glow-ring"></div>
+        <div class="card" id="card">
+            <div class="sheen"></div>
 
-        <!-- your photo -->
-        <img class="avatar" src="profile.jpg" alt="Ilyas Mboula Moro">
+            <!-- your photo -->
+            <img class="avatar" src="profile.jpg" alt="Ilyas Mboula Moro">
 
-        <h1>Ilyas Mboula Moro</h1>
-        <p class="role">Business System Analyst • Builder</p>
+            <h1>Ilyas Mboula Moro</h1>
+            <p class="role">Business System Analyst • Builder</p>
 
-        <div class="pitch">Open to AI internships and collaborating on ML projects</div>
+            <div class="pitch">Open to AI internships and collaborating on ML projects</div>
 
-        <a class="btn" href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
-        <a class="btn" href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
-        <a class="btn" href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
-        <button class="btn save" onclick="saveContact()">📇 Save Contact</button>
+            <a class="btn" href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
+            <a class="btn" href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
+            <a class="btn" href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
+            <button class="btn save" id="saveBtn" onclick="saveContact(event)">📇 Save Contact</button>
 
-        <div class="qr-row">
-            <div class="qr-block">
-                <div class="qr">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Filyasmoro.github.io%2FQR_Contact_Codes_001%2F" alt="QR code linking to this card">
+            <div class="qr-row">
+                <div class="qr-block">
+                    <div class="qr">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Filyasmoro.github.io%2FQR_Contact_Codes_001%2F" alt="QR code linking to this card">
+                    </div>
+                    <div class="qr-label">Scan to open this card</div>
                 </div>
-                <div class="qr-label">Scan to open this card</div>
             </div>
         </div>
-
     </div>
 
     <script>
-        function saveContact() {
+        function saveContact(evt) {
             const vcard = [
                 'BEGIN:VCARD',
                 'VERSION:3.0',
@@ -284,7 +348,78 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
+
+            if (evt && evt.currentTarget) {
+                launchConfetti(evt.currentTarget);
+            }
         }
+
+        function launchConfetti(originEl) {
+            const rect = originEl.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+            const colors = ['#3b82f6', '#22c55e', '#a855f7', '#f59e0b', '#f1f5f9'];
+
+            for (let i = 0; i < 26; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                el.style.left = originX + 'px';
+                el.style.top = originY + 'px';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 70 + Math.random() * 130;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance - 50;
+                const rot = (Math.random() * 720 - 360) + 'deg';
+
+                el.style.setProperty('--dx', dx + 'px');
+                el.style.setProperty('--dy', dy + 'px');
+                el.style.setProperty('--rot', rot);
+
+                document.body.appendChild(el);
+                el.addEventListener('animationend', () => el.remove());
+            }
+        }
+
+        (function initTilt() {
+            const wrap = document.getElementById('cardWrap');
+            const card = document.getElementById('card');
+            const maxTilt = 9;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) return;
+
+            function applyTilt(px, py) {
+                const rotateY = px * maxTilt * 2;
+                const rotateX = -py * maxTilt * 2;
+                card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                card.classList.add('tilting');
+                const sheen = card.querySelector('.sheen');
+                sheen.style.backgroundPosition = `${50 + px * 60}% ${50 + py * 60}%`;
+            }
+
+            function resetTilt() {
+                card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+                card.classList.remove('tilting');
+            }
+
+            function fromPoint(clientX, clientY) {
+                const rect = card.getBoundingClientRect();
+                const px = (clientX - rect.left) / rect.width - 0.5;
+                const py = (clientY - rect.top) / rect.height - 0.5;
+                applyTilt(px, py);
+            }
+
+            wrap.addEventListener('mousemove', (e) => fromPoint(e.clientX, e.clientY));
+            wrap.addEventListener('mouseleave', resetTilt);
+
+            wrap.addEventListener('touchmove', (e) => {
+                const t = e.touches[0];
+                if (t) fromPoint(t.clientX, t.clientY);
+            }, { passive: true });
+            wrap.addEventListener('touchend', resetTilt);
+            wrap.addEventListener('touchcancel', resetTilt);
+        })();
     </script>
 
 </body>
