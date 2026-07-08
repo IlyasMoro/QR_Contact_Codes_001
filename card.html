@@ -71,7 +71,6 @@
             max-width: 400px;
             margin: 60px auto;
             perspective: 900px;
-            touch-action: none;
         }
 
         .glow-ring {
@@ -369,13 +368,6 @@
 
             wrap.addEventListener('mousemove', (e) => fromPoint(e.clientX, e.clientY));
             wrap.addEventListener('mouseleave', resetTilt);
-
-            wrap.addEventListener('touchmove', (e) => {
-                const t = e.touches[0];
-                if (t) fromPoint(t.clientX, t.clientY);
-            }, { passive: true });
-            wrap.addEventListener('touchend', resetTilt);
-            wrap.addEventListener('touchcancel', resetTilt);
         })();
     </script>
 
