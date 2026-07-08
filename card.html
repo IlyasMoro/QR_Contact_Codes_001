@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1120">
+    <title>Ilyas Digital Card</title>
+    <meta name="description" content="Ilyas Mboula Moro — Business System Analyst, Builder. Scan or tap to connect.">
+
+    <meta property="og:title" content="Ilyas Mboula Moro — Digital Card">
+    <meta property="og:description" content="Business System Analyst • Builder">
+    <meta property="og:image" content="https://ilyas-digital-card.netlify.app/profile.jpg">
+    <meta property="og:url" content="https://ilyas-digital-card.netlify.app/card.html">
+    <meta property="og:type" content="profile">
+    <meta name="twitter:card" content="summary">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #16233d 0%, #0b1120 55%, #05070d 100%);
+            color: #f1f5f9;
+            text-align: center;
+            position: relative;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 460px;
+            height: 460px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.28;
+            z-index: 0;
+            pointer-events: none;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+
+        body::before {
+            background: #3b82f6;
+            top: -160px;
+            left: -160px;
+        }
+
+        body::after {
+            background: #22c55e;
+            bottom: -160px;
+            right: -160px;
+            animation-delay: 2s;
+        }
+
+        @keyframes drift {
+            from { transform: translate(0, 0) scale(1); }
+            to   { transform: translate(20px, 30px) scale(1.08); }
+        }
+
+        .card-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 400px;
+            margin: 60px auto;
+            perspective: 900px;
+            touch-action: none;
+        }
+
+        .glow-ring {
+            position: absolute;
+            inset: -3px;
+            border-radius: 29px;
+            background: conic-gradient(from 0deg, #3b82f6, #22c55e, #a855f7, #f59e0b, #3b82f6);
+            filter: blur(11px);
+            opacity: 0.55;
+            z-index: 0;
+            animation: spin 7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            padding: 36px 28px 30px;
+            background: rgba(255, 255, 255, 0.045);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 26px;
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transition: transform .2s ease-out;
+            will-change: transform;
+        }
+
+        .sheen {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            border-radius: inherit;
+            pointer-events: none;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.32) 45%, rgba(147,197,253,0.32) 50%, rgba(255,255,255,0.32) 55%, transparent 70%);
+            background-size: 250% 250%;
+            background-position: 50% 50%;
+            opacity: 0;
+            transition: opacity .3s ease;
+            mix-blend-mode: overlay;
+        }
+
+        .card.tilting .sheen {
+            opacity: 1;
+        }
+
+        .card > *:not(.sheen) {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(.2, .7, .3, 1) forwards;
+        }
+
+        .card > *:nth-child(2) { animation-delay: .05s; }
+        .card > *:nth-child(3) { animation-delay: .12s; }
+        .card > *:nth-child(4) { animation-delay: .19s; }
+        .card > *:nth-child(5) { animation-delay: .26s; }
+        .card > *:nth-child(6) { animation-delay: .33s; }
+        .card > *:nth-child(7) { animation-delay: .40s; }
+        .card > *:nth-child(8) { animation-delay: .47s; }
+        .card > *:nth-child(9) { animation-delay: .54s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        img.avatar {
+            width: 122px;
+            height: 122px;
+            border-radius: 50%;
+            border: 3px solid rgba(59, 130, 246, 0.65);
+            box-shadow:
+                0 0 0 6px rgba(59, 130, 246, 0.10),
+                0 10px 26px rgba(0, 0, 0, 0.45);
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 1.55rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin: 18px 0 4px;
+        }
+
+        .role {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #94a3b8;
+            margin: 0;
+        }
+
+        .pitch {
+            display: inline-block;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #bfdbfe;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.32);
+            border-radius: 999px;
+            padding: 9px 18px;
+            margin: 16px 0 22px;
+        }
+
+        a.btn, button.btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin: 10px 0;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.38);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 14px;
+            color: #f1f5f9;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease, background .25s ease, border-color .25s ease;
+        }
+
+        a.btn:hover, button.btn:hover {
+            transform: translateY(-2px);
+            background: rgba(0, 0, 0, 0.55);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        a.btn:active, button.btn:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        a.btn:focus-visible, button.btn:focus-visible {
+            outline: 2px solid rgba(59, 130, 246, 0.8);
+            outline-offset: 2px;
+        }
+
+        button.save {
+            background: rgba(34, 197, 94, 0.14);
+            border-color: rgba(34, 197, 94, 0.4);
+            color: #bbf7d0;
+        }
+
+        button.save:hover {
+            background: rgba(34, 197, 94, 0.22);
+            border-color: rgba(34, 197, 94, 0.55);
+            box-shadow: 0 14px 30px rgba(34, 197, 94, 0.22);
+        }
+
+        .confetti-piece {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 50;
+            animation: confetti-burst .9s cubic-bezier(.2,.8,.2,1) forwards;
+        }
+
+        @keyframes confetti-burst {
+            to {
+                transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card > *, body::before, body::after, .glow-ring {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .card { transition: none !important; }
+            .sheen { display: none !important; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card-wrap" id="cardWrap">
+        <div class="glow-ring"></div>
+        <div class="card" id="card">
+            <div class="sheen"></div>
+
+            <!-- your photo -->
+            <img class="avatar" src="profile.jpg" alt="Ilyas Mboula Moro">
+
+            <h1>Ilyas Mboula Moro</h1>
+            <p class="role">Business System Analyst • Builder</p>
+
+            <div class="pitch">Open to AI internships and collaborating on ML projects</div>
+
+            <a class="btn" href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
+            <a class="btn" href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
+            <a class="btn" href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
+            <button class="btn save" id="saveBtn" onclick="saveContact(event)">📇 Save Contact</button>
+        </div>
+    </div>
+
+    <script>
+        function saveContact(evt) {
+            const vcard = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                'N:Moro;Ilyas;;;',
+                'FN:Ilyas Mboula Moro',
+                'TITLE:Business System Analyst',
+                'EMAIL:mboulamoroilyas@gmail.com',
+                'TEL;TYPE=CELL:+27721234567',
+                'URL;TYPE=LinkedIn:https://www.linkedin.com/in/ilyas-m-moro-0508a62b1',
+                'URL;TYPE=WhatsApp:https://wa.me/27721234567',
+                'END:VCARD'
+            ].join('\n');
+
+            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Ilyas_Mboula_Moro.vcf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            if (evt && evt.currentTarget) {
+                launchConfetti(evt.currentTarget);
+            }
+        }
+
+        function launchConfetti(originEl) {
+            const rect = originEl.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+            const colors = ['#3b82f6', '#22c55e', '#a855f7', '#f59e0b', '#f1f5f9'];
+
+            for (let i = 0; i < 26; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                el.style.left = originX + 'px';
+                el.style.top = originY + 'px';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 70 + Math.random() * 130;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance - 50;
+                const rot = (Math.random() * 720 - 360) + 'deg';
+
+                el.style.setProperty('--dx', dx + 'px');
+                el.style.setProperty('--dy', dy + 'px');
+                el.style.setProperty('--rot', rot);
+
+                document.body.appendChild(el);
+                el.addEventListener('animationend', () => el.remove());
+            }
+        }
+
+        (function initTilt() {
+            const wrap = document.getElementById('cardWrap');
+            const card = document.getElementById('card');
+            const maxTilt = 9;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) return;
+
+            function applyTilt(px, py) {
+                const rotateY = px * maxTilt * 2;
+                const rotateX = -py * maxTilt * 2;
+                card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                card.classList.add('tilting');
+                const sheen = card.querySelector('.sheen');
+                sheen.style.backgroundPosition = `${50 + px * 60}% ${50 + py * 60}%`;
+            }
+
+            function resetTilt() {
+                card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+                card.classList.remove('tilting');
+            }
+
+            function fromPoint(clientX, clientY) {
+                const rect = card.getBoundingClientRect();
+                const px = (clientX - rect.left) / rect.width - 0.5;
+                const py = (clientY - rect.top) / rect.height - 0.5;
+                applyTilt(px, py);
+            }
+
+            wrap.addEventListener('mousemove', (e) => fromPoint(e.clientX, e.clientY));
+            wrap.addEventListener('mouseleave', resetTilt);
+
+            wrap.addEventListener('touchmove', (e) => {
+                const t = e.touches[0];
+                if (t) fromPoint(t.clientX, t.clientY);
+            }, { passive: true });
+            wrap.addEventListener('touchend', resetTilt);
+            wrap.addEventListener('touchcancel', resetTilt);
+        })();
+    </script>
+
+</body>
+</html>
