@@ -236,12 +236,14 @@
                 <label for="email">Email</label>
                 <input id="email" type="email" placeholder="jane@example.com">
 
-                <label for="linkedin">LinkedIn URL</label>
-                <input id="linkedin" type="url" placeholder="https://www.linkedin.com/in/janedoe">
+                <label for="linkedin">LinkedIn</label>
+                <input id="linkedin" type="text" placeholder="linkedin.com/in/janedoe or just janedoe">
+                <div class="hint">Paste your profile link, or just your username — any format works</div>
 
-                <label for="photo">Photo URL (optional)</label>
-                <input id="photo" type="url" placeholder="https://example.com/my-photo.jpg">
-                <div class="hint">Leave blank to show your initials instead</div>
+                <label for="photo">Photo</label>
+                <input id="photo" type="file" accept="image/*">
+                <img id="photoPreview" style="display:none; margin-top:10px; width:64px; height:64px; border-radius:50%; object-fit:cover; border:2px solid rgba(59,130,246,0.5);">
+                <div class="hint">Leave blank to show your initials instead. Photos are compressed to fit in the link.</div>
 
                 <button type="submit" class="generate">✨ Generate My Card</button>
             </form>
@@ -250,10 +252,10 @@
                 <div class="qr">
                     <img id="qrImg" src="" alt="QR code for your digital card">
                 </div>
-                <div class="link-row">
-                    <input id="linkOutput" type="text" readonly>
-                    <button type="button" onclick="copyLink()">Copy</button>
+                <div id="photoWarning" class="hint" style="display:none; color:#f59e0b; margin-top:12px;">
+                    Your photo is too large to fit inside the QR code, so the QR links to your card without it (shows initials instead). The copied link below still includes your photo.
                 </div>
+                <button type="button" class="generate" style="margin-top:16px;" onclick="copyLink()">📋 Copy My Card Link</button>
                 <a class="preview-link" id="previewLink" href="#" target="_blank">Open my card →</a>
             </div>
         </div>
@@ -263,33 +265,103 @@
         const form = document.getElementById('cardForm');
         const result = document.getElementById('result');
         const qrImg = document.getElementById('qrImg');
-        const linkOutput = document.getElementById('linkOutput');
         const previewLink = document.getElementById('previewLink');
+        const photoWarning = document.getElementById('photoWarning');
+        const photoInput = document.getElementById('photo');
+        const photoPreview = document.getElementById('photoPreview');
 
-        form.addEventListener('submit', (e) => {
+        let generatedFullUrl = '';
+        const QR_SAFE_LIMIT = 1200;
+
+        photoInput.addEventListener('change', () => {
+            const file = photoInput.files[0];
+            if (!file) {
+                photoPreview.style.display = 'none';
+                return;
+            }
+            photoPreview.src = URL.createObjectURL(file);
+            photoPreview.style.display = 'inline-block';
+        });
+
+        function normalizeLinkedIn(raw) {
+            const value = raw.trim();
+            if (!value) return '';
+            if (/^https?:\/\//i.test(value)) return value;
+            if (/^(www\.)?linkedin\.com/i.test(value)) return 'https://' + value.replace(/^\/+/, '');
+            return 'https://www.linkedin.com/in/' + value.replace(/^\/+/, '').replace(/^in\//, '');
+        }
+
+        function resizeImageToDataUri(file, maxSize, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onerror = reject;
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onerror = reject;
+                    img.onload = () => {
+                        const scale = Math.min(maxSize / img.width, maxSize / img.height, 1);
+                        const canvas = document.createElement('canvas');
+                        canvas.width = Math.max(1, Math.round(img.width * scale));
+                        canvas.height = Math.max(1, Math.round(img.height * scale));
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const params = new URLSearchParams();
-            const fields = ['name', 'role', 'pitch', 'wa', 'email', 'linkedin', 'photo'];
+            const fields = ['name', 'role', 'pitch', 'wa', 'email'];
 
             fields.forEach((id) => {
                 const value = document.getElementById(id).value.trim();
                 if (value) params.set(id, value);
             });
 
-            const cardUrl = `${location.origin}${location.pathname.replace('create.html', '')}card.html?${params.toString()}`;
+            const linkedin = normalizeLinkedIn(document.getElementById('linkedin').value);
+            if (linkedin) params.set('linkedin', linkedin);
 
-            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(cardUrl)}`;
-            linkOutput.value = cardUrl;
-            previewLink.href = cardUrl;
+            const photoFile = photoInput.files[0];
+            let photoDataUri = '';
+            if (photoFile) {
+                photoDataUri = await resizeImageToDataUri(photoFile, 72, 0.55);
+                params.set('photo', photoDataUri);
+            }
+
+            const base = `${location.origin}${location.pathname.replace('create.html', '')}card.html`;
+            const fullUrl = `${base}?${params.toString()}`;
+            generatedFullUrl = fullUrl;
+
+            let qrUrl = fullUrl;
+            let photoDroppedFromQR = false;
+            if (photoDataUri && fullUrl.length > QR_SAFE_LIMIT) {
+                const qrParams = new URLSearchParams(params);
+                qrParams.delete('photo');
+                qrUrl = `${base}?${qrParams.toString()}`;
+                photoDroppedFromQR = true;
+            }
+
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrUrl)}`;
+            previewLink.href = fullUrl;
+            photoWarning.style.display = photoDroppedFromQR ? 'block' : 'none';
             result.classList.add('visible');
             result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
 
         function copyLink() {
-            linkOutput.select();
-            navigator.clipboard.writeText(linkOutput.value).catch(() => {
+            navigator.clipboard.writeText(generatedFullUrl).catch(() => {
+                const temp = document.createElement('textarea');
+                temp.value = generatedFullUrl;
+                document.body.appendChild(temp);
+                temp.select();
                 document.execCommand('copy');
+                document.body.removeChild(temp);
             });
         }
     </script>
