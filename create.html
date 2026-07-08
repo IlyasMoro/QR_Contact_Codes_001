@@ -40,13 +40,13 @@
         }
 
         body::before {
-            background: #3b82f6;
+            background: #2563eb;
             top: -160px;
             left: -160px;
         }
 
         body::after {
-            background: #22c55e;
+            background: #0ea5e9;
             bottom: -160px;
             right: -160px;
             animation-delay: 2s;
@@ -79,14 +79,35 @@
             margin-bottom: 28px;
         }
 
+        .panel-wrap {
+            position: relative;
+        }
+
+        .glow-ring {
+            position: absolute;
+            inset: -3px;
+            border-radius: 25px;
+            background: conic-gradient(from 0deg, #0b1120, #1e3a8a, #2563eb, #38bdf8, #1e3a8a, #0b1120);
+            filter: blur(11px);
+            opacity: 0.55;
+            z-index: 0;
+            animation: spin 8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .panel {
-            background: rgba(255, 255, 255, 0.045);
-            backdrop-filter: blur(24px) saturate(160%);
-            -webkit-backdrop-filter: blur(24px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.09);
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(165deg, rgba(30, 58, 138, 0.16), rgba(2, 6, 23, 0.55));
+            backdrop-filter: blur(26px) saturate(170%);
+            -webkit-backdrop-filter: blur(26px) saturate(170%);
+            border: 1px solid rgba(96, 165, 250, 0.16);
             border-radius: 22px;
             padding: 26px 22px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(147, 197, 253, 0.1);
         }
 
         label {
@@ -104,8 +125,8 @@
         input {
             width: 100%;
             padding: 12px 14px;
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(2, 6, 23, 0.45);
+            border: 1px solid rgba(96, 165, 250, 0.14);
             border-radius: 10px;
             color: #f1f5f9;
             font-size: 14px;
@@ -128,23 +149,33 @@
         }
 
         button.generate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             width: 100%;
             margin-top: 24px;
             padding: 14px 16px;
-            background: rgba(34, 197, 94, 0.16);
-            border: 1px solid rgba(34, 197, 94, 0.4);
+            background: rgba(14, 165, 233, 0.14);
+            border: 1px solid rgba(56, 189, 248, 0.4);
             border-radius: 12px;
-            color: #bbf7d0;
+            color: #bae6fd;
             font-size: 15px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
-            transition: background .2s ease, transform .2s ease;
+            transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+        }
+
+        button.generate svg {
+            width: 18px;
+            height: 18px;
         }
 
         button.generate:hover {
-            background: rgba(34, 197, 94, 0.26);
+            background: rgba(14, 165, 233, 0.24);
             transform: translateY(-1px);
+            box-shadow: 0 14px 30px rgba(14, 165, 233, 0.2);
         }
 
         .result {
@@ -171,33 +202,6 @@
             height: 180px;
         }
 
-        .link-row {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .link-row input {
-            flex: 1;
-            font-size: 12px;
-        }
-
-        .link-row button {
-            padding: 0 16px;
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            border-radius: 10px;
-            color: #bfdbfe;
-            font-size: 13px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-        .link-row button:hover {
-            background: rgba(59, 130, 246, 0.32);
-        }
-
         .preview-link {
             display: inline-block;
             margin-top: 14px;
@@ -209,6 +213,12 @@
         .preview-link:hover {
             text-decoration: underline;
         }
+
+        @media (prefers-reduced-motion: reduce) {
+            .glow-ring, body::before, body::after {
+                animation: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -218,6 +228,8 @@
         <h1>Create Your Digital Card</h1>
         <p class="sub">Fill this in once — get a shareable link and QR code. No account, no backend.</p>
 
+        <div class="panel-wrap">
+        <div class="glow-ring"></div>
         <div class="panel">
             <form id="cardForm">
                 <label for="name">Full name *</label>
@@ -245,7 +257,10 @@
                 <img id="photoPreview" style="display:none; margin-top:10px; width:64px; height:64px; border-radius:50%; object-fit:cover; border:2px solid rgba(59,130,246,0.5);">
                 <div class="hint">Leave blank to show your initials instead. Photos are compressed to fit in the link.</div>
 
-                <button type="submit" class="generate">✨ Generate My Card</button>
+                <button type="submit" class="generate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+                    Generate My Card
+                </button>
             </form>
 
             <div class="result" id="result">
@@ -255,9 +270,13 @@
                 <div id="photoWarning" class="hint" style="display:none; color:#f59e0b; margin-top:12px;">
                     Your photo is too large to fit inside the QR code, so the QR links to your card without it (shows initials instead). The copied link below still includes your photo.
                 </div>
-                <button type="button" class="generate" style="margin-top:16px;" onclick="copyLink()">📋 Copy My Card Link</button>
+                <button type="button" class="generate" style="margin-top:16px;" onclick="copyLink()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    Copy My Card Link
+                </button>
                 <a class="preview-link" id="previewLink" href="#" target="_blank">Open my card →</a>
             </div>
+        </div>
         </div>
     </div>
 

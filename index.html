@@ -44,13 +44,13 @@
         }
 
         body::before {
-            background: #3b82f6;
+            background: #2563eb;
             top: -160px;
             left: -160px;
         }
 
         body::after {
-            background: #22c55e;
+            background: #0ea5e9;
             bottom: -160px;
             right: -160px;
             animation-delay: 2s;
@@ -71,7 +71,7 @@
             position: absolute;
             inset: -3px;
             border-radius: 26px;
-            background: conic-gradient(from 0deg, #3b82f6, #22c55e, #a855f7, #f59e0b, #3b82f6);
+            background: conic-gradient(from 0deg, #0b1120, #1e3a8a, #2563eb, #38bdf8, #1e3a8a, #0b1120);
             filter: blur(11px);
             opacity: 0.6;
             z-index: 0;
@@ -86,14 +86,14 @@
             position: relative;
             z-index: 1;
             padding: 34px 34px 26px;
-            background: rgba(255, 255, 255, 0.045);
-            backdrop-filter: blur(24px) saturate(160%);
-            -webkit-backdrop-filter: blur(24px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.09);
+            background: linear-gradient(165deg, rgba(30, 58, 138, 0.16), rgba(2, 6, 23, 0.55));
+            backdrop-filter: blur(26px) saturate(170%);
+            -webkit-backdrop-filter: blur(26px) saturate(170%);
+            border: 1px solid rgba(96, 165, 250, 0.16);
             border-radius: 24px;
             box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.55),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+                0 25px 60px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(147, 197, 253, 0.1);
             opacity: 0;
             animation: fadeInUp 0.7s cubic-bezier(.2, .7, .3, 1) forwards;
         }
@@ -117,10 +117,20 @@
         }
 
         .label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             margin-top: 16px;
             font-size: 13px;
             color: #94a3b8;
             letter-spacing: 0.02em;
+        }
+
+        .label svg {
+            width: 15px;
+            height: 15px;
+            color: #60a5fa;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -141,7 +151,10 @@
             <div class="qr">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Filyas-digital-card.netlify.app%2Fcard.html" alt="QR code to Ilyas's digital contact card">
             </div>
-            <div class="label">Scan to connect</div>
+            <div class="label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+                <span>Scan to connect</span>
+            </div>
         </div>
     </div>
 

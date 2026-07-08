@@ -48,13 +48,13 @@
         }
 
         body::before {
-            background: #3b82f6;
+            background: #2563eb;
             top: -160px;
             left: -160px;
         }
 
         body::after {
-            background: #22c55e;
+            background: #0ea5e9;
             bottom: -160px;
             right: -160px;
             animation-delay: 2s;
@@ -77,9 +77,9 @@
             position: absolute;
             inset: -3px;
             border-radius: 29px;
-            background: conic-gradient(from 0deg, #3b82f6, #22c55e, #a855f7, #f59e0b, #3b82f6);
+            background: conic-gradient(from 0deg, #0b1120, #1e3a8a, #2563eb, #38bdf8, #1e3a8a, #0b1120);
             filter: blur(11px);
-            opacity: 0.55;
+            opacity: 0.6;
             z-index: 0;
             animation: spin 7s linear infinite;
         }
@@ -92,14 +92,14 @@
             position: relative;
             z-index: 1;
             padding: 36px 28px 30px;
-            background: rgba(255, 255, 255, 0.045);
-            backdrop-filter: blur(24px) saturate(160%);
-            -webkit-backdrop-filter: blur(24px) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.09);
+            background: linear-gradient(165deg, rgba(30, 58, 138, 0.16), rgba(2, 6, 23, 0.55));
+            backdrop-filter: blur(26px) saturate(170%);
+            -webkit-backdrop-filter: blur(26px) saturate(170%);
+            border: 1px solid rgba(96, 165, 250, 0.16);
             border-radius: 26px;
             box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.55),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+                0 25px 60px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(147, 197, 253, 0.1);
             transition: transform .2s ease-out;
             will-change: transform;
         }
@@ -159,7 +159,7 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto;
-            background: linear-gradient(135deg, #3b82f6, #22c55e);
+            background: linear-gradient(135deg, #1e3a8a, #38bdf8);
             font-size: 2.4rem;
             font-weight: 700;
             color: white;
@@ -198,18 +198,18 @@
         a.btn, button.btn {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
             margin: 10px 0;
-            padding: 14px 16px;
-            background: rgba(0, 0, 0, 0.38);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.09);
+            padding: 10px 16px 10px 10px;
+            background: rgba(2, 6, 23, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(96, 165, 250, 0.14);
             border-radius: 14px;
             color: #f1f5f9;
             text-decoration: none;
+            text-align: left;
             font-size: 15px;
             font-weight: 600;
             font-family: inherit;
@@ -219,14 +219,14 @@
 
         a.btn:hover, button.btn:hover {
             transform: translateY(-2px);
-            background: rgba(0, 0, 0, 0.55);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(30, 58, 138, 0.28);
+            border-color: rgba(96, 165, 250, 0.4);
+            box-shadow: 0 14px 30px rgba(2, 6, 23, 0.55);
         }
 
         a.btn:active, button.btn:active {
             transform: translateY(0);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 14px rgba(2, 6, 23, 0.45);
         }
 
         a.btn:focus-visible, button.btn:focus-visible {
@@ -238,16 +238,50 @@
             display: none;
         }
 
+        .icon-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(14, 165, 233, 0.12));
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            color: #93c5fd;
+        }
+
+        .icon-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-label {
+            flex: 1;
+        }
+
+        .chevron {
+            color: #475569;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        button.save .icon-badge {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.32), rgba(14, 165, 233, 0.14));
+            border-color: rgba(56, 189, 248, 0.4);
+            color: #7dd3fc;
+        }
+
         button.save {
-            background: rgba(34, 197, 94, 0.14);
-            border-color: rgba(34, 197, 94, 0.4);
-            color: #bbf7d0;
+            background: rgba(14, 165, 233, 0.12);
+            border-color: rgba(56, 189, 248, 0.35);
+            color: #bae6fd;
         }
 
         button.save:hover {
-            background: rgba(34, 197, 94, 0.22);
-            border-color: rgba(34, 197, 94, 0.55);
-            box-shadow: 0 14px 30px rgba(34, 197, 94, 0.22);
+            background: rgba(14, 165, 233, 0.2);
+            border-color: rgba(56, 189, 248, 0.55);
+            box-shadow: 0 14px 30px rgba(14, 165, 233, 0.22);
         }
 
         .made-with {
@@ -306,10 +340,33 @@
 
             <div class="pitch" id="pitchEl">Open to AI internships and collaborating on ML projects</div>
 
-            <a class="btn" id="waBtn" href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
-            <a class="btn" id="emailBtn" href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
-            <a class="btn" id="linkedinBtn" href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
-            <button class="btn save" id="saveBtn" onclick="saveContact(event)">📇 Save Contact</button>
+            <a class="btn" id="waBtn" href="https://wa.me/27721234567" target="_blank">
+                <span class="icon-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                </span>
+                <span class="btn-label">WhatsApp</span>
+                <span class="chevron">›</span>
+            </a>
+            <a class="btn" id="emailBtn" href="mailto:mboulamoroilyas@gmail.com">
+                <span class="icon-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+                </span>
+                <span class="btn-label">Email</span>
+                <span class="chevron">›</span>
+            </a>
+            <a class="btn" id="linkedinBtn" href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">
+                <span class="icon-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                </span>
+                <span class="btn-label">LinkedIn</span>
+                <span class="chevron">›</span>
+            </a>
+            <button class="btn save" id="saveBtn" onclick="saveContact(event)">
+                <span class="icon-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 8h3M15 12h3M7 16h10"/></svg>
+                </span>
+                <span class="btn-label">Save Contact</span>
+            </button>
 
             <a class="made-with" href="create.html">Made with this card generator — create your own</a>
         </div>
@@ -427,7 +484,7 @@
             const rect = originEl.getBoundingClientRect();
             const originX = rect.left + rect.width / 2;
             const originY = rect.top + rect.height / 2;
-            const colors = ['#3b82f6', '#22c55e', '#a855f7', '#f59e0b', '#f1f5f9'];
+            const colors = ['#3b82f6', '#38bdf8', '#60a5fa', '#0ea5e9', '#f1f5f9'];
 
             for (let i = 0; i < 26; i++) {
                 const el = document.createElement('div');
