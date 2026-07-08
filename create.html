@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1120">
+    <title>Create Your Digital Card</title>
+    <meta name="description" content="Build your own digital contact card and QR code — no sign-up needed.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #16233d 0%, #0b1120 55%, #05070d 100%);
+            color: #f1f5f9;
+            position: relative;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 460px;
+            height: 460px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.28;
+            z-index: 0;
+            pointer-events: none;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+
+        body::before {
+            background: #3b82f6;
+            top: -160px;
+            left: -160px;
+        }
+
+        body::after {
+            background: #22c55e;
+            bottom: -160px;
+            right: -160px;
+            animation-delay: 2s;
+        }
+
+        @keyframes drift {
+            from { transform: translate(0, 0) scale(1); }
+            to   { transform: translate(20px, 30px) scale(1.08); }
+        }
+
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 420px;
+            margin: 48px auto;
+            padding: 0 20px 60px;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .sub {
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 28px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.045);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 22px;
+            padding: 26px 22px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin: 16px 0 6px;
+        }
+
+        label:first-of-type {
+            margin-top: 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #f1f5f9;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input::placeholder {
+            color: #475569;
+        }
+
+        input:focus {
+            outline: 2px solid rgba(59, 130, 246, 0.6);
+            outline-offset: 1px;
+        }
+
+        .hint {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        button.generate {
+            width: 100%;
+            margin-top: 24px;
+            padding: 14px 16px;
+            background: rgba(34, 197, 94, 0.16);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            border-radius: 12px;
+            color: #bbf7d0;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        button.generate:hover {
+            background: rgba(34, 197, 94, 0.26);
+            transform: translateY(-1px);
+        }
+
+        .result {
+            display: none;
+            margin-top: 26px;
+            text-align: center;
+        }
+
+        .result.visible {
+            display: block;
+        }
+
+        .result .qr {
+            display: inline-block;
+            padding: 12px;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .result .qr img {
+            display: block;
+            width: 180px;
+            height: 180px;
+        }
+
+        .link-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .link-row input {
+            flex: 1;
+            font-size: 12px;
+        }
+
+        .link-row button {
+            padding: 0 16px;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 10px;
+            color: #bfdbfe;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .link-row button:hover {
+            background: rgba(59, 130, 246, 0.32);
+        }
+
+        .preview-link {
+            display: inline-block;
+            margin-top: 14px;
+            font-size: 13px;
+            color: #93c5fd;
+            text-decoration: none;
+        }
+
+        .preview-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrap">
+        <h1>Create Your Digital Card</h1>
+        <p class="sub">Fill this in once — get a shareable link and QR code. No account, no backend.</p>
+
+        <div class="panel">
+            <form id="cardForm">
+                <label for="name">Full name *</label>
+                <input id="name" type="text" placeholder="Jane Doe" required>
+
+                <label for="role">Role / title</label>
+                <input id="role" type="text" placeholder="Product Designer • Builder">
+
+                <label for="pitch">Pitch line</label>
+                <input id="pitch" type="text" placeholder="Open to freelance design work">
+
+                <label for="wa">WhatsApp number</label>
+                <input id="wa" type="tel" placeholder="27721234567">
+                <div class="hint">Country code + number, digits only, no spaces or +</div>
+
+                <label for="email">Email</label>
+                <input id="email" type="email" placeholder="jane@example.com">
+
+                <label for="linkedin">LinkedIn URL</label>
+                <input id="linkedin" type="url" placeholder="https://www.linkedin.com/in/janedoe">
+
+                <label for="photo">Photo URL (optional)</label>
+                <input id="photo" type="url" placeholder="https://example.com/my-photo.jpg">
+                <div class="hint">Leave blank to show your initials instead</div>
+
+                <button type="submit" class="generate">✨ Generate My Card</button>
+            </form>
+
+            <div class="result" id="result">
+                <div class="qr">
+                    <img id="qrImg" src="" alt="QR code for your digital card">
+                </div>
+                <div class="link-row">
+                    <input id="linkOutput" type="text" readonly>
+                    <button type="button" onclick="copyLink()">Copy</button>
+                </div>
+                <a class="preview-link" id="previewLink" href="#" target="_blank">Open my card →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('cardForm');
+        const result = document.getElementById('result');
+        const qrImg = document.getElementById('qrImg');
+        const linkOutput = document.getElementById('linkOutput');
+        const previewLink = document.getElementById('previewLink');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const params = new URLSearchParams();
+            const fields = ['name', 'role', 'pitch', 'wa', 'email', 'linkedin', 'photo'];
+
+            fields.forEach((id) => {
+                const value = document.getElementById(id).value.trim();
+                if (value) params.set(id, value);
+            });
+
+            const cardUrl = `${location.origin}${location.pathname.replace('create.html', '')}card.html?${params.toString()}`;
+
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(cardUrl)}`;
+            linkOutput.value = cardUrl;
+            previewLink.href = cardUrl;
+            result.classList.add('visible');
+            result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        function copyLink() {
+            linkOutput.select();
+            navigator.clipboard.writeText(linkOutput.value).catch(() => {
+                document.execCommand('copy');
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0b1120">
-    <title>Ilyas Digital Card</title>
-    <meta name="description" content="Ilyas Mboula Moro — Business System Analyst, Builder. Scan or tap to connect.">
+    <title id="pageTitle">Ilyas Digital Card</title>
+    <meta id="metaDescription" name="description" content="Ilyas Mboula Moro — Business System Analyst, Builder. Scan or tap to connect.">
 
     <meta property="og:title" content="Ilyas Mboula Moro — Digital Card">
     <meta property="og:description" content="Business System Analyst • Builder">
@@ -128,20 +128,22 @@
         }
 
         .card > *:nth-child(2) { animation-delay: .05s; }
-        .card > *:nth-child(3) { animation-delay: .12s; }
-        .card > *:nth-child(4) { animation-delay: .19s; }
-        .card > *:nth-child(5) { animation-delay: .26s; }
-        .card > *:nth-child(6) { animation-delay: .33s; }
-        .card > *:nth-child(7) { animation-delay: .40s; }
-        .card > *:nth-child(8) { animation-delay: .47s; }
-        .card > *:nth-child(9) { animation-delay: .54s; }
+        .card > *:nth-child(3) { animation-delay: .10s; }
+        .card > *:nth-child(4) { animation-delay: .16s; }
+        .card > *:nth-child(5) { animation-delay: .22s; }
+        .card > *:nth-child(6) { animation-delay: .28s; }
+        .card > *:nth-child(7) { animation-delay: .34s; }
+        .card > *:nth-child(8) { animation-delay: .40s; }
+        .card > *:nth-child(9) { animation-delay: .46s; }
+        .card > *:nth-child(10) { animation-delay: .52s; }
+        .card > *:nth-child(11) { animation-delay: .58s; }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(14px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        img.avatar {
+        img.avatar, .avatar.initials {
             width: 122px;
             height: 122px;
             border-radius: 50%;
@@ -150,6 +152,17 @@
                 0 0 0 6px rgba(59, 130, 246, 0.10),
                 0 10px 26px rgba(0, 0, 0, 0.45);
             object-fit: cover;
+        }
+
+        .avatar.initials {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #3b82f6, #22c55e);
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: white;
         }
 
         h1 {
@@ -176,6 +189,10 @@
             border-radius: 999px;
             padding: 9px 18px;
             margin: 16px 0 22px;
+        }
+
+        .pitch:empty {
+            display: none;
         }
 
         a.btn, button.btn {
@@ -217,6 +234,10 @@
             outline-offset: 2px;
         }
 
+        a.btn.hidden {
+            display: none;
+        }
+
         button.save {
             background: rgba(34, 197, 94, 0.14);
             border-color: rgba(34, 197, 94, 0.4);
@@ -227,6 +248,18 @@
             background: rgba(34, 197, 94, 0.22);
             border-color: rgba(34, 197, 94, 0.55);
             box-shadow: 0 14px 30px rgba(34, 197, 94, 0.22);
+        }
+
+        .made-with {
+            display: block;
+            margin-top: 18px;
+            font-size: 11px;
+            color: #64748b;
+            text-decoration: none;
+        }
+
+        .made-with:hover {
+            color: #94a3b8;
         }
 
         .confetti-piece {
@@ -265,41 +298,121 @@
         <div class="card" id="card">
             <div class="sheen"></div>
 
-            <!-- your photo -->
-            <img class="avatar" src="profile.jpg" alt="Ilyas Mboula Moro">
+            <img class="avatar" id="avatarImg" src="profile.jpg" alt="Ilyas Mboula Moro">
+            <div class="avatar initials" id="avatarInitials" style="display:none;"></div>
 
-            <h1>Ilyas Mboula Moro</h1>
-            <p class="role">Business System Analyst • Builder</p>
+            <h1 id="nameEl">Ilyas Mboula Moro</h1>
+            <p class="role" id="roleEl">Business System Analyst • Builder</p>
 
-            <div class="pitch">Open to AI internships and collaborating on ML projects</div>
+            <div class="pitch" id="pitchEl">Open to AI internships and collaborating on ML projects</div>
 
-            <a class="btn" href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
-            <a class="btn" href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
-            <a class="btn" href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
+            <a class="btn" id="waBtn" href="https://wa.me/27721234567" target="_blank">💬 WhatsApp</a>
+            <a class="btn" id="emailBtn" href="mailto:mboulamoroilyas@gmail.com">✉️ Email</a>
+            <a class="btn" id="linkedinBtn" href="https://www.linkedin.com/in/ilyas-m-moro-0508a62b1" target="_blank">🔗 LinkedIn</a>
             <button class="btn save" id="saveBtn" onclick="saveContact(event)">📇 Save Contact</button>
+
+            <a class="made-with" href="create.html">Made with this card generator — create your own</a>
         </div>
     </div>
 
     <script>
+        const profile = {
+            name: 'Ilyas Mboula Moro',
+            role: 'Business System Analyst • Builder',
+            pitch: 'Open to AI internships and collaborating on ML projects',
+            wa: '27721234567',
+            email: 'mboulamoroilyas@gmail.com',
+            linkedin: 'https://www.linkedin.com/in/ilyas-m-moro-0508a62b1',
+            photo: ''
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const hasAnyParam = [...params.keys()].length > 0;
+
+        ['name', 'role', 'pitch', 'wa', 'email', 'linkedin', 'photo'].forEach((key) => {
+            const value = params.get(key);
+            if (value) profile[key] = value;
+        });
+
+        function applyProfile() {
+            document.getElementById('pageTitle').textContent = profile.name + ' — Digital Card';
+            document.getElementById('metaDescription').setAttribute('content', profile.name + ' — ' + profile.role);
+
+            document.getElementById('nameEl').textContent = profile.name;
+            document.getElementById('roleEl').textContent = profile.role;
+            document.getElementById('pitchEl').textContent = profile.pitch;
+
+            const avatarImg = document.getElementById('avatarImg');
+            const avatarInitials = document.getElementById('avatarInitials');
+
+            if (profile.photo) {
+                avatarImg.src = profile.photo;
+                avatarImg.alt = profile.name;
+                avatarImg.style.display = '';
+                avatarInitials.style.display = 'none';
+            } else if (hasAnyParam) {
+                avatarImg.style.display = 'none';
+                avatarInitials.style.display = 'flex';
+                avatarInitials.textContent = profile.name
+                    .split(/\s+/)
+                    .filter(Boolean)
+                    .slice(0, 2)
+                    .map((w) => w[0].toUpperCase())
+                    .join('');
+            }
+
+            const waBtn = document.getElementById('waBtn');
+            const emailBtn = document.getElementById('emailBtn');
+            const linkedinBtn = document.getElementById('linkedinBtn');
+
+            if (profile.wa) {
+                waBtn.href = 'https://wa.me/' + profile.wa.replace(/[^\d]/g, '');
+            } else {
+                waBtn.classList.add('hidden');
+            }
+
+            if (profile.email) {
+                emailBtn.href = 'mailto:' + profile.email;
+            } else {
+                emailBtn.classList.add('hidden');
+            }
+
+            if (profile.linkedin) {
+                linkedinBtn.href = profile.linkedin;
+            } else {
+                linkedinBtn.classList.add('hidden');
+            }
+        }
+
+        function vcardEscape(str) {
+            return String(str).replace(/([,;\\])/g, '\\$1');
+        }
+
         function saveContact(evt) {
-            const vcard = [
+            const nameParts = profile.name.trim().split(/\s+/);
+            const lastName = nameParts.length > 1 ? nameParts.pop() : '';
+            const firstName = nameParts.join(' ');
+
+            const lines = [
                 'BEGIN:VCARD',
                 'VERSION:3.0',
-                'N:Moro;Ilyas;;;',
-                'FN:Ilyas Mboula Moro',
-                'TITLE:Business System Analyst',
-                'EMAIL:mboulamoroilyas@gmail.com',
-                'TEL;TYPE=CELL:+27721234567',
-                'URL;TYPE=LinkedIn:https://www.linkedin.com/in/ilyas-m-moro-0508a62b1',
-                'URL;TYPE=WhatsApp:https://wa.me/27721234567',
-                'END:VCARD'
-            ].join('\n');
+                `N:${vcardEscape(lastName)};${vcardEscape(firstName)};;;`,
+                `FN:${vcardEscape(profile.name)}`,
+                `TITLE:${vcardEscape(profile.role)}`
+            ];
 
-            const blob = new Blob([vcard], { type: 'text/vcard' });
+            if (profile.email) lines.push(`EMAIL:${vcardEscape(profile.email)}`);
+            if (profile.wa) lines.push(`TEL;TYPE=CELL:+${profile.wa.replace(/[^\d]/g, '')}`);
+            if (profile.linkedin) lines.push(`URL;TYPE=LinkedIn:${vcardEscape(profile.linkedin)}`);
+            if (profile.wa) lines.push(`URL;TYPE=WhatsApp:https://wa.me/${profile.wa.replace(/[^\d]/g, '')}`);
+
+            lines.push('END:VCARD');
+
+            const blob = new Blob([lines.join('\n')], { type: 'text/vcard' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'Ilyas_Mboula_Moro.vcf';
+            link.download = profile.name.replace(/\s+/g, '_') + '.vcf';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -369,6 +482,8 @@
             wrap.addEventListener('mousemove', (e) => fromPoint(e.clientX, e.clientY));
             wrap.addEventListener('mouseleave', resetTilt);
         })();
+
+        applyProfile();
     </script>
 
 </body>
